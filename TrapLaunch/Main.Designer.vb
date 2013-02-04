@@ -33,6 +33,7 @@ Partial Class Main
         Me.maintab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Settings = New System.Windows.Forms.TabPage()
+        Me.labellauncherversion = New System.Windows.Forms.Label()
         Me.buttondefaultsettings = New System.Windows.Forms.Button()
         Me.labelftpusername = New System.Windows.Forms.Label()
         Me.labelftppassword = New System.Windows.Forms.Label()
@@ -40,7 +41,6 @@ Partial Class Main
         Me.textboxftppassword = New System.Windows.Forms.TextBox()
         Me.TextBoxftpusername = New System.Windows.Forms.TextBox()
         Me.textboxftpaddress = New System.Windows.Forms.TextBox()
-        Me.labellauncherversion = New System.Windows.Forms.Label()
         CType(Me.numericupdownmaxram, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownminram, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.maintab.SuspendLayout()
@@ -172,6 +172,16 @@ Partial Class Main
         Me.Settings.Text = "Settings"
         Me.Settings.UseVisualStyleBackColor = True
         '
+        'labellauncherversion
+        '
+        Me.labellauncherversion.AutoSize = True
+        Me.labellauncherversion.Location = New System.Drawing.Point(89, 191)
+        Me.labellauncherversion.Name = "labellauncherversion"
+        Me.labellauncherversion.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.labellauncherversion.Size = New System.Drawing.Size(102, 13)
+        Me.labellauncherversion.TabIndex = 16
+        Me.labellauncherversion.Text = "Launcher Version :  "
+        '
         'buttondefaultsettings
         '
         Me.buttondefaultsettings.Location = New System.Drawing.Point(6, 186)
@@ -236,16 +246,6 @@ Partial Class Main
         Me.textboxftpaddress.TabIndex = 9
         Me.textboxftpaddress.Text = "ftp://localhost"
         '
-        'labellauncherversion
-        '
-        Me.labellauncherversion.AutoSize = True
-        Me.labellauncherversion.Location = New System.Drawing.Point(89, 191)
-        Me.labellauncherversion.Name = "labellauncherversion"
-        Me.labellauncherversion.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.labellauncherversion.Size = New System.Drawing.Size(102, 13)
-        Me.labellauncherversion.TabIndex = 16
-        Me.labellauncherversion.Text = "Launcher Version :  "
-        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -255,7 +255,7 @@ Partial Class Main
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "Main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "TrapLaunch0.1"
+        Me.Text = "TrapLaunch0.2"
         CType(Me.numericupdownmaxram, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDownminram, System.ComponentModel.ISupportInitialize).EndInit()
         Me.maintab.ResumeLayout(False)

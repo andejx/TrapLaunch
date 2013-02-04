@@ -27,7 +27,7 @@ Public Class Main
     Private Sub configgenerate()
         'writes up a default config.txt with empty lines for things unknown
         Using write1 As StreamWriter = File.AppendText("config.txt")
-            write1.WriteLine("TrapCraft0.1") 'launcher version
+            write1.WriteLine("TrapCraft0.2") 'launcher version
             write1.WriteLine(" ") 'minecraft client version
             write1.WriteLine("512") 'minram
             write1.WriteLine("1024") 'maxram
@@ -36,11 +36,13 @@ Public Class Main
             write1.WriteLine("test123") 'ftppassword
             write1.Close()
         End Using
+        configread()
     End Sub
 
     Private Sub configread()
         Dim configread() As String
         configread = File.ReadAllLines("./config.txt")
+        labellauncherversion.Text = "Launcher Version : " & configread(0)
         NumericUpDownminram.Value = configread(2)
         numericupdownmaxram.Value = configread(3)
         textboxftpaddress.Text = configread(4)
@@ -152,7 +154,7 @@ Public Class Main
         'resets all config options by regenerating the config file then rereading the config.
         File.Delete("./config.txt")
         Using write1 As StreamWriter = File.AppendText("config.txt")
-            write1.WriteLine("TrapCraft0.1")
+            write1.WriteLine("TrapCraft0.2")
             write1.WriteLine(" ")
             write1.WriteLine("512") 
             write1.WriteLine("1024")
