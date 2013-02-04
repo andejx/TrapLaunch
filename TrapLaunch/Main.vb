@@ -13,6 +13,10 @@ Public Class Main
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        labellauncherversion.Text = "Launcher Version: " & My.Application.Info.Version.ToString
+        'To change version number, go to Project -> TrapLaunch Properties -> Assembly Information.
+        'Good practice to keep these updated as that is usually how version data is obtained.
+
         Dim checkconfig As Boolean
         'checks if launcher config exists, if it doesn't it calls configgenerate() and makes one.
         checkconfig = File.Exists("./config.txt")
@@ -27,7 +31,7 @@ Public Class Main
     Private Sub configgenerate()
         'writes up a default config.txt with empty lines for things unknown
         Using write1 As StreamWriter = File.AppendText("config.txt")
-            write1.WriteLine("TrapCraft0.2") 'launcher version
+            'write1.WriteLine("TrapCraft0.2") 'launcher version
             write1.WriteLine(" ") 'minecraft client version
             write1.WriteLine("512") 'minram
             write1.WriteLine("1024") 'maxram
@@ -42,12 +46,13 @@ Public Class Main
     Private Sub configread()
         Dim configread() As String
         configread = File.ReadAllLines("./config.txt")
-        labellauncherversion.Text = "Launcher Version : " & configread(0)
-        NumericUpDownminram.Value = configread(2)
-        numericupdownmaxram.Value = configread(3)
-        textboxftpaddress.Text = configread(4)
-        TextBoxftpusername.Text = configread(5)
-        textboxftppassword.Text = configread(6)
+        'labellauncherversion.Text = "Launcher Version : " & configread(0)
+        'Using a built in function to obtain the version number is a lot more effective.
+        NumericUpDownminram.Value = configread(1)
+        numericupdownmaxram.Value = configread(2)
+        textboxftpaddress.Text = configread(3)
+        TextBoxftpusername.Text = configread(4)
+        textboxftppassword.Text = configread(5)
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles buttonupdate.Click
@@ -156,7 +161,7 @@ Public Class Main
         Using write1 As StreamWriter = File.AppendText("config.txt")
             write1.WriteLine("TrapCraft0.2")
             write1.WriteLine(" ")
-            write1.WriteLine("512") 
+            write1.WriteLine("512")
             write1.WriteLine("1024")
             write1.WriteLine("ftp://localhost")
             write1.WriteLine("test")
@@ -165,5 +170,4 @@ Public Class Main
         End Using
         configread()
     End Sub
-
 End Class

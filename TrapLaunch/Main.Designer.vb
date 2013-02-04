@@ -128,6 +128,9 @@ Partial Class Main
         '
         'maintab
         '
+        Me.maintab.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.maintab.Controls.Add(Me.TabPage1)
         Me.maintab.Controls.Add(Me.Settings)
         Me.maintab.Location = New System.Drawing.Point(12, 12)
@@ -253,6 +256,7 @@ Partial Class Main
         Me.ClientSize = New System.Drawing.Size(529, 261)
         Me.Controls.Add(Me.maintab)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = False
         Me.Name = "Main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "TrapLaunch0.2"
