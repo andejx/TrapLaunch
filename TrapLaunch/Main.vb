@@ -13,10 +13,9 @@ Public Class Main
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Text = "TrapEZ-MC : " & My.Application.Info.Version.ToString
         labellauncherversion.Text = "Launcher Version: " & My.Application.Info.Version.ToString
         'To change version number, go to Project -> TrapLaunch Properties -> Assembly Information.
-        'Good practice to keep these updated as that is usually how version data is obtained.
-
         Dim checkconfig As Boolean
         'checks if launcher config exists, if it doesn't it calls configgenerate() and makes one.
         checkconfig = File.Exists("./config.txt")
@@ -31,7 +30,6 @@ Public Class Main
     Private Sub configgenerate()
         'writes up a default config.txt with empty lines for things unknown
         Using write1 As StreamWriter = File.AppendText("config.txt")
-            'write1.WriteLine("TrapCraft0.2") 'launcher version
             write1.WriteLine(" ") 'minecraft client version
             write1.WriteLine("512") 'minram
             write1.WriteLine("1024") 'maxram
@@ -159,7 +157,6 @@ Public Class Main
         'resets all config options by regenerating the config file then rereading the config.
         File.Delete("./config.txt")
         Using write1 As StreamWriter = File.AppendText("config.txt")
-            write1.WriteLine("TrapCraft0.2")
             write1.WriteLine(" ")
             write1.WriteLine("512")
             write1.WriteLine("1024")

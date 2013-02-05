@@ -259,7 +259,7 @@ Partial Class Main
         Me.MaximizeBox = False
         Me.Name = "Main"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "TrapLaunch0.2"
+        Me.Text = "TrapEZ-MC :  "
         CType(Me.numericupdownmaxram, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDownminram, System.ComponentModel.ISupportInitialize).EndInit()
         Me.maintab.ResumeLayout(False)
