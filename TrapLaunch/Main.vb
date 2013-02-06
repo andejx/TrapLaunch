@@ -11,14 +11,13 @@ Public Class Main
     Dim username As String
     Dim password As String
 
-
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "TrapEZ-MC : " & My.Application.Info.Version.ToString
         labellauncherversion.Text = "Launcher Version: " & My.Application.Info.Version.ToString
         'To change version number, go to Project -> TrapLaunch Properties -> Assembly Information.
         Dim checkconfig As Boolean
         'checks if launcher config exists, if it doesn't it calls configgenerate() and makes one.
-        checkconfig = File.Exists("./config.txt")
+        checkconfig = File.Exists("./config")
         If checkconfig = False Then
             configgenerate()
         Else
@@ -28,8 +27,8 @@ Public Class Main
     End Sub
 
     Private Sub configgenerate()
-        'writes up a default config.txt with empty lines for things unknown
-        Using write1 As StreamWriter = File.AppendText("config.txt")
+        'writes up a default config with empty lines for things unknown
+        Using write1 As StreamWriter = File.AppendText("config")
             write1.WriteLine(" ") 'minecraft client version
             write1.WriteLine("512") 'minram
             write1.WriteLine("1024") 'maxram
@@ -43,7 +42,7 @@ Public Class Main
 
     Private Sub configread()
         Dim configread() As String
-        configread = File.ReadAllLines("./config.txt")
+        configread = File.ReadAllLines("./config")
         'labellauncherversion.Text = "Launcher Version : " & configread(0)
         'Using a built in function to obtain the version number is a lot more effective.
         NumericUpDownminram.Value = configread(1)
@@ -99,15 +98,26 @@ Public Class Main
     Private Sub numericupdownmaxram_ValueChanged(sender As Object, e As EventArgs) Handles numericupdownmaxram.ValueChanged
         'sets max ram whenever it's changed
         javamaxram = numericupdownmaxram.Value
+        If javamaxram < javaminram Then
+            numericupdownmaxram.UpButton()
+        End If
     End Sub
 
+    Private Sub textboxftpaddress_TextChanged(sender As Object, e As EventArgs) Handles textboxftpaddress.TextChanged
+        host = textboxftpaddress.Text
+    End Sub
+
+    Private Sub textboxftpusername_TextChanged(sender As Object, e As EventArgs) Handles TextBoxftpusername.TextChanged
+        username = TextBoxftpusername.Text
+    End Sub
+
+    Private Sub textboxftppassword_TextChanged(sender As Object, e As EventArgs) Handles textboxftppassword.TextChanged
+        password = textboxftppassword.Text
+    End Sub
 
     Private Sub ftpdownload()
         'does the ftp downloadin based on w/e the program has 
         'remoteFile and localFile strings set to. ie ".remote/modlist.txt" ,".local/modlist.txt"
-        host = textboxftpaddress.Text
-        username = TextBoxftpusername.Text
-        password = textboxftppassword.Text
 
         Dim URI As String = host & remoteFile
         Dim ftp As System.Net.FtpWebRequest = _
@@ -155,8 +165,8 @@ Public Class Main
 
     Private Sub buttondefaultsettings_Click(sender As Object, e As EventArgs) Handles buttondefaultsettings.Click
         'resets all config options by regenerating the config file then rereading the config.
-        File.Delete("./config.txt")
-        Using write1 As StreamWriter = File.AppendText("config.txt")
+        File.Delete("./config")
+        Using write1 As StreamWriter = File.AppendText("config")
             write1.WriteLine(" ")
             write1.WriteLine("512")
             write1.WriteLine("1024")
@@ -166,5 +176,18 @@ Public Class Main
             write1.Close()
         End Using
         configread()
+    End Sub
+
+    Private Sub maintab_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles maintab.SelectedIndexChanged
+        File.Delete("./config")
+        Using write1 As StreamWriter = File.AppendText("config")
+            write1.WriteLine(" ")
+            write1.WriteLine(javaminram)
+            write1.WriteLine(javamaxram)
+            write1.WriteLine(host)
+            write1.WriteLine(username)
+            write1.WriteLine(password)
+            write1.Close()
+        End Using
     End Sub
 End Class
