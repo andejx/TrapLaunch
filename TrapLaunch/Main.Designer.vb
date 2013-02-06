@@ -32,6 +32,7 @@ Partial Class Main
         Me.NumericUpDownminram = New System.Windows.Forms.NumericUpDown()
         Me.maintab = New System.Windows.Forms.TabControl()
         Me.mainpage = New System.Windows.Forms.TabPage()
+        Me.labelserverversion = New System.Windows.Forms.Label()
         Me.settingspage = New System.Windows.Forms.TabPage()
         Me.labellauncherversion = New System.Windows.Forms.Label()
         Me.buttondefaultsettings = New System.Windows.Forms.Button()
@@ -41,13 +42,18 @@ Partial Class Main
         Me.textboxftppassword = New System.Windows.Forms.TextBox()
         Me.TextBoxftpusername = New System.Windows.Forms.TextBox()
         Me.textboxftpaddress = New System.Windows.Forms.TextBox()
-        Me.labelserverversion = New System.Windows.Forms.Label()
         Me.adminpage = New System.Windows.Forms.TabPage()
+        Me.changestab = New System.Windows.Forms.TabPage()
+        Me.listboxadditions = New System.Windows.Forms.ListBox()
+        Me.listboxdeletions = New System.Windows.Forms.ListBox()
+        Me.labeladditions = New System.Windows.Forms.Label()
+        Me.labeldeletions = New System.Windows.Forms.Label()
         CType(Me.numericupdownmaxram, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownminram, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.maintab.SuspendLayout()
         Me.mainpage.SuspendLayout()
         Me.settingspage.SuspendLayout()
+        Me.changestab.SuspendLayout()
         Me.SuspendLayout()
         '
         'buttonupdate
@@ -136,6 +142,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.maintab.Controls.Add(Me.mainpage)
         Me.maintab.Controls.Add(Me.settingspage)
+        Me.maintab.Controls.Add(Me.changestab)
         Me.maintab.Controls.Add(Me.adminpage)
         Me.maintab.Location = New System.Drawing.Point(12, 12)
         Me.maintab.Name = "maintab"
@@ -157,6 +164,15 @@ Partial Class Main
         Me.mainpage.TabIndex = 0
         Me.mainpage.Text = "Main"
         Me.mainpage.UseVisualStyleBackColor = True
+        '
+        'labelserverversion
+        '
+        Me.labelserverversion.AutoSize = True
+        Me.labelserverversion.Location = New System.Drawing.Point(6, 185)
+        Me.labelserverversion.Name = "labelserverversion"
+        Me.labelserverversion.Size = New System.Drawing.Size(122, 13)
+        Me.labelserverversion.TabIndex = 4
+        Me.labelserverversion.Text = "Current Server Version : "
         '
         'settingspage
         '
@@ -254,15 +270,6 @@ Partial Class Main
         Me.textboxftpaddress.TabIndex = 9
         Me.textboxftpaddress.Text = "ftp://localhost"
         '
-        'labelserverversion
-        '
-        Me.labelserverversion.AutoSize = True
-        Me.labelserverversion.Location = New System.Drawing.Point(6, 185)
-        Me.labelserverversion.Name = "labelserverversion"
-        Me.labelserverversion.Size = New System.Drawing.Size(122, 13)
-        Me.labelserverversion.TabIndex = 4
-        Me.labelserverversion.Text = "Current Server Version : "
-        '
         'adminpage
         '
         Me.adminpage.Location = New System.Drawing.Point(4, 22)
@@ -271,6 +278,54 @@ Partial Class Main
         Me.adminpage.TabIndex = 2
         Me.adminpage.Text = "Admin"
         Me.adminpage.UseVisualStyleBackColor = True
+        '
+        'changestab
+        '
+        Me.changestab.Controls.Add(Me.labeldeletions)
+        Me.changestab.Controls.Add(Me.labeladditions)
+        Me.changestab.Controls.Add(Me.listboxdeletions)
+        Me.changestab.Controls.Add(Me.listboxadditions)
+        Me.changestab.Location = New System.Drawing.Point(4, 22)
+        Me.changestab.Name = "changestab"
+        Me.changestab.Size = New System.Drawing.Size(497, 214)
+        Me.changestab.TabIndex = 3
+        Me.changestab.Text = "Changes"
+        Me.changestab.UseVisualStyleBackColor = True
+        '
+        'listboxadditions
+        '
+        Me.listboxadditions.FormattingEnabled = True
+        Me.listboxadditions.Location = New System.Drawing.Point(3, 36)
+        Me.listboxadditions.Name = "listboxadditions"
+        Me.listboxadditions.ScrollAlwaysVisible = True
+        Me.listboxadditions.Size = New System.Drawing.Size(229, 173)
+        Me.listboxadditions.TabIndex = 0
+        '
+        'listboxdeletions
+        '
+        Me.listboxdeletions.FormattingEnabled = True
+        Me.listboxdeletions.Location = New System.Drawing.Point(265, 36)
+        Me.listboxdeletions.Name = "listboxdeletions"
+        Me.listboxdeletions.Size = New System.Drawing.Size(229, 173)
+        Me.listboxdeletions.TabIndex = 1
+        '
+        'labeladditions
+        '
+        Me.labeladditions.AutoSize = True
+        Me.labeladditions.Location = New System.Drawing.Point(81, 13)
+        Me.labeladditions.Name = "labeladditions"
+        Me.labeladditions.Size = New System.Drawing.Size(50, 13)
+        Me.labeladditions.TabIndex = 2
+        Me.labeladditions.Text = "Additions"
+        '
+        'labeldeletions
+        '
+        Me.labeldeletions.AutoSize = True
+        Me.labeldeletions.Location = New System.Drawing.Point(354, 13)
+        Me.labeldeletions.Name = "labeldeletions"
+        Me.labeldeletions.Size = New System.Drawing.Size(51, 13)
+        Me.labeldeletions.TabIndex = 3
+        Me.labeldeletions.Text = "Deletions"
         '
         'Main
         '
@@ -290,6 +345,8 @@ Partial Class Main
         Me.mainpage.PerformLayout()
         Me.settingspage.ResumeLayout(False)
         Me.settingspage.PerformLayout()
+        Me.changestab.ResumeLayout(False)
+        Me.changestab.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -314,5 +371,10 @@ Partial Class Main
     Friend WithEvents labellauncherversion As System.Windows.Forms.Label
     Friend WithEvents labelserverversion As System.Windows.Forms.Label
     Friend WithEvents adminpage As System.Windows.Forms.TabPage
+    Friend WithEvents changestab As System.Windows.Forms.TabPage
+    Friend WithEvents labeldeletions As System.Windows.Forms.Label
+    Friend WithEvents labeladditions As System.Windows.Forms.Label
+    Friend WithEvents listboxdeletions As System.Windows.Forms.ListBox
+    Friend WithEvents listboxadditions As System.Windows.Forms.ListBox
 
 End Class

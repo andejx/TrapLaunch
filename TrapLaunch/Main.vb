@@ -21,10 +21,20 @@ Public Class Main
         Me.Text = "TrapEZ-MC : " & My.Application.Info.Version.ToString
         labellauncherversion.Text = "Launcher Version: " & My.Application.Info.Version.ToString
 
+        'checks to see if folders exist and creates them if they don't
+        Dim checkclientfolder As Boolean
+        checkclientfolder = Directory.Exists(".\clientfiles")
+        If checkclientfolder = False Then
+            Directory.CreateDirectory(".\launcherconfigs\")
+            Directory.CreateDirectory(".\clientfiles")
+            Directory.CreateDirectory(".\clientfiles\mods")
+            Directory.CreateDirectory(".\clientfiles\coremods")
+        End If
+
 
         'checks if launcher config exists, if it doesn't it calls configgenerate() and makes one.
         Dim checkconfigfile As Boolean
-        checkconfigfile = File.Exists("config")
+        checkconfigfile = File.Exists(".\launcherconfigs\config")
         If checkconfigfile = False Then
             configgenerate()
         Else
@@ -34,33 +44,33 @@ Public Class Main
 
 
         'checks to see if clientbuildnumber file exists, if not creates default one
-        checkbuildnumberexists = File.Exists("clientbuildnumber")
+        checkbuildnumberexists = File.Exists(".\launcherconfigs\clientbuildnumber")
         If checkbuildnumberexists = False Then
-            File.WriteAllText("clientbuildnumber", "0.0")
-            clientbuildnumber = File.ReadAllText("clientbuildnumber")
+            File.WriteAllText(".\launcherconfigs\clientbuildnumber", "0.0")
+            clientbuildnumber = File.ReadAllText(".\launcherconfigs\clientbuildnumber")
             labelclientversion.Text = "Current Client Version : " & clientbuildnumber
         Else
             'if it does exist sets the version number as 'clientbuildnumber'
-            clientbuildnumber = File.ReadAllText("clientbuildnumber")
+            clientbuildnumber = File.ReadAllText(".\launcherconfigs\clientbuildnumber")
             labelclientversion.Text = "Current Client Version : " & clientbuildnumber
         End If
 
         'checks to see if serverbuildnumber exists, if not makes one
-        checkservernumberexists = File.Exists("serverbuildnumber")
+        checkservernumberexists = File.Exists(".\launcherconfigs\serverbuildnumber")
         If checkservernumberexists = False Then
-            File.WriteAllText("serverbuildnumber", "0")
-            serverbuildnumber = File.ReadAllText("serverbuildnumber")
+            File.WriteAllText(".\launcherconfigs\serverbuildnumber", "0")
+            serverbuildnumber = File.ReadAllText(".\launcherconfigs\serverbuildnumber")
         Else
-            serverbuildnumber = File.ReadAllText("serverbuildnumber")
+            serverbuildnumber = File.ReadAllText(".\launcherconfigs\serverbuildnumber")
             labelserverversion.Text = "Current Server Version : " & serverbuildnumber
         End If
 
         'downloads latest serverbuildnumber and sets version as 'serverbuildnumber'
         Try
             remoteFile = "/serverbuildnumber"
-            localFile = "serverbuildnumber"
+            localFile = ".\launcherconfigs\serverbuildnumber"
             ftpdownload()
-            serverbuildnumber = File.ReadAllText("serverbuildnumber")
+            serverbuildnumber = File.ReadAllText(".\launcherconfigs\serverbuildnumber")
             labelserverversion.Text = "Current Server Version : " & serverbuildnumber
         Catch webex As System.Net.WebException
             labelserverversion.Text = "Current Server Version : " & serverbuildnumber & " Unverified"
@@ -76,26 +86,26 @@ Public Class Main
             labelserverversion.BackColor = Color.PaleGreen
         End If
 
-        'checks to see if folders exist and creates them if they don't
-        Dim checkclientfolder As Boolean
-        checkclientfolder = Directory.Exists("./clientfiles")
-        If checkclientfolder = False Then
-            Directory.CreateDirectory("./clientfiles")
-            Directory.CreateDirectory("./clientfiles/mods")
-            Directory.CreateDirectory("./clientfiles/coremods")
-        End If
-
 
     End Sub
 
     Private Sub clientlistgen()
-
+        'writes list of files in clientfiles\mods\ to clientmodlist
+        'finally found a way of doing it that didn't bring the path with it.
+        Dim o As New System.IO.DirectoryInfo(".\clientfiles\mods\")
+        Dim myfiles() As System.IO.FileInfo
+        myfiles = o.GetFiles("*")
+        Using write1 As StreamWriter = File.AppendText(".\launcherconfigs\clientmodlist")
+            For y As Integer = 0 To myfiles.Length - 1
+                write1.WriteLine(myfiles(y).Name())
+            Next
+        End Using
 
     End Sub
 
     Private Sub configgenerate()
         'writes up a default config with empty lines for things unknown
-        Using write1 As StreamWriter = File.AppendText("config")
+        Using write1 As StreamWriter = File.AppendText(".\launcherconfigs\config")
             write1.WriteLine("512") 'minram
             write1.WriteLine("1024") 'maxram
             write1.WriteLine("ftp://localhost") 'ftphost
@@ -108,7 +118,7 @@ Public Class Main
 
     Private Sub configread()
         Dim configread() As String
-        configread = File.ReadAllLines("config")
+        configread = File.ReadAllLines(".\launcherconfigs\config")
         NumericUpDownminram.Value = configread(0)
         numericupdownmaxram.Value = configread(1)
         textboxftpaddress.Text = configread(2)
@@ -120,28 +130,28 @@ Public Class Main
         'builds clientmodlist
         clientlistgen()
 
-        'on button press this makes progress bar visible, then sets its value to 1
-        progbarupdate.Visible = True
-        progbarupdate.Value = 1
+        ''on button press this makes progress bar visible, then sets its value to 1
+        'progbarupdate.Visible = True
+        'progbarupdate.Value = 1
 
-        Try
-            'it then tries to connect to a server and download a current modlist
-            remoteFile = "/modlist"
-            localFile = "modlist"
-            ftpdownload()
-            'if it succeeds then it sets progress bar a little further along, then it converts the contents of the,
-            'downloaded modlist to a string, and then to a msgbox for debug purposes, this section will eventually, 
-            'do the mod version checking 
-            progbarupdate.Value = 20
-            Dim modlist As String
-            modlist = My.Computer.FileSystem.ReadAllText("modlist")
-            MsgBox(modlist)
-            progbarupdate.Value = 100
-        Catch webex As System.Net.WebException
-            'if the server is unreachable for any reason rather than crash the program it will simply output this message.
-            MsgBox("Couldn't Retrieve Latest Client Info")
-            progbarupdate.Value = 0
-        End Try
+        'Try
+        '    'it then tries to connect to a server and download a current modlist
+        '    remoteFile = "/modlist"
+        '    localFile = "modlist"
+        '    ftpdownload()
+        '    'if it succeeds then it sets progress bar a little further along, then it converts the contents of the,
+        '    'downloaded modlist to a string, and then to a msgbox for debug purposes, this section will eventually, 
+        '    'do the mod version checking 
+        '    progbarupdate.Value = 20
+        '    Dim modlist As String
+        '    modlist = My.Computer.FileSystem.ReadAllText("modlist")
+        '    MsgBox(modlist)
+        '    progbarupdate.Value = 100
+        'Catch webex As System.Net.WebException
+        '    'if the server is unreachable for any reason rather than crash the program it will simply output this message.
+        '    MsgBox("Couldn't Retrieve Latest Client Info")
+        '    progbarupdate.Value = 0
+        'End Try
     End Sub
 
     Private Sub buttonplay_Click(sender As Object, e As EventArgs) Handles buttonplay.Click
@@ -231,8 +241,8 @@ Public Class Main
 
     Private Sub Form1_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         'saves config to file before closing
-        File.Delete("config")
-        Using write1 As StreamWriter = File.AppendText("config")
+        File.Delete(".\launcherconfigs\config")
+        Using write1 As StreamWriter = File.AppendText(".\launcherconfigs\config")
             write1.WriteLine(javaminram)
             write1.WriteLine(javamaxram)
             write1.WriteLine(host)
@@ -254,8 +264,8 @@ Public Class Main
 
     Private Sub buttondefaultsettings_Click(sender As Object, e As EventArgs) Handles buttondefaultsettings.Click
         'resets all config options by regenerating the config file then rereading the config.
-        File.Delete("config")
-        Using write1 As StreamWriter = File.AppendText("config")
+        File.Delete(".\launcherconfigs\config")
+        Using write1 As StreamWriter = File.AppendText(".\launcherconfigs\config")
             write1.WriteLine("512")
             write1.WriteLine("1024")
             write1.WriteLine("ftp://localhost")
@@ -268,8 +278,8 @@ Public Class Main
 
     Private Sub maintab_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles maintab.SelectedIndexChanged
         'also saves config options to file whenever the "main" tab is selected.
-        File.Delete("config")
-        Using write1 As StreamWriter = File.AppendText("config")
+        File.Delete(".\launcherconfigs\config")
+        Using write1 As StreamWriter = File.AppendText(".\launcherconfigs\config")
             write1.WriteLine(javaminram)
             write1.WriteLine(javamaxram)
             write1.WriteLine(host)
@@ -278,5 +288,4 @@ Public Class Main
             write1.Close()
         End Using
     End Sub
-
 End Class
