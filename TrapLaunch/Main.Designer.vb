@@ -24,15 +24,15 @@ Partial Class Main
     Private Sub InitializeComponent()
         Me.buttonupdate = New System.Windows.Forms.Button()
         Me.progbarupdate = New System.Windows.Forms.ProgressBar()
-        Me.labelmcversion = New System.Windows.Forms.Label()
+        Me.labelclientversion = New System.Windows.Forms.Label()
         Me.buttonplay = New System.Windows.Forms.Button()
         Me.numericupdownmaxram = New System.Windows.Forms.NumericUpDown()
         Me.labelrammax = New System.Windows.Forms.Label()
         Me.labelminram = New System.Windows.Forms.Label()
         Me.NumericUpDownminram = New System.Windows.Forms.NumericUpDown()
         Me.maintab = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Settings = New System.Windows.Forms.TabPage()
+        Me.mainpage = New System.Windows.Forms.TabPage()
+        Me.settingspage = New System.Windows.Forms.TabPage()
         Me.labellauncherversion = New System.Windows.Forms.Label()
         Me.buttondefaultsettings = New System.Windows.Forms.Button()
         Me.labelftpusername = New System.Windows.Forms.Label()
@@ -41,11 +41,13 @@ Partial Class Main
         Me.textboxftppassword = New System.Windows.Forms.TextBox()
         Me.TextBoxftpusername = New System.Windows.Forms.TextBox()
         Me.textboxftpaddress = New System.Windows.Forms.TextBox()
+        Me.labelserverversion = New System.Windows.Forms.Label()
+        Me.adminpage = New System.Windows.Forms.TabPage()
         CType(Me.numericupdownmaxram, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDownminram, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.maintab.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        Me.Settings.SuspendLayout()
+        Me.mainpage.SuspendLayout()
+        Me.settingspage.SuspendLayout()
         Me.SuspendLayout()
         '
         'buttonupdate
@@ -65,14 +67,15 @@ Partial Class Main
         Me.progbarupdate.TabIndex = 1
         Me.progbarupdate.Visible = False
         '
-        'labelmcversion
+        'labelclientversion
         '
-        Me.labelmcversion.AutoSize = True
-        Me.labelmcversion.Location = New System.Drawing.Point(310, 88)
-        Me.labelmcversion.Name = "labelmcversion"
-        Me.labelmcversion.Size = New System.Drawing.Size(107, 13)
-        Me.labelmcversion.TabIndex = 2
-        Me.labelmcversion.Text = "Current MC Version : "
+        Me.labelclientversion.AutoSize = True
+        Me.labelclientversion.BackColor = System.Drawing.Color.Transparent
+        Me.labelclientversion.Location = New System.Drawing.Point(6, 160)
+        Me.labelclientversion.Name = "labelclientversion"
+        Me.labelclientversion.Size = New System.Drawing.Size(117, 13)
+        Me.labelclientversion.TabIndex = 2
+        Me.labelclientversion.Text = "Current Client Version : "
         '
         'buttonplay
         '
@@ -131,49 +134,51 @@ Partial Class Main
         Me.maintab.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.maintab.Controls.Add(Me.TabPage1)
-        Me.maintab.Controls.Add(Me.Settings)
+        Me.maintab.Controls.Add(Me.mainpage)
+        Me.maintab.Controls.Add(Me.settingspage)
+        Me.maintab.Controls.Add(Me.adminpage)
         Me.maintab.Location = New System.Drawing.Point(12, 12)
         Me.maintab.Name = "maintab"
         Me.maintab.SelectedIndex = 0
         Me.maintab.Size = New System.Drawing.Size(505, 240)
         Me.maintab.TabIndex = 10
         '
-        'TabPage1
+        'mainpage
         '
-        Me.TabPage1.Controls.Add(Me.labelmcversion)
-        Me.TabPage1.Controls.Add(Me.buttonplay)
-        Me.TabPage1.Controls.Add(Me.progbarupdate)
-        Me.TabPage1.Controls.Add(Me.buttonupdate)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(497, 214)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Main"
-        Me.TabPage1.UseVisualStyleBackColor = True
+        Me.mainpage.Controls.Add(Me.labelserverversion)
+        Me.mainpage.Controls.Add(Me.labelclientversion)
+        Me.mainpage.Controls.Add(Me.buttonplay)
+        Me.mainpage.Controls.Add(Me.progbarupdate)
+        Me.mainpage.Controls.Add(Me.buttonupdate)
+        Me.mainpage.Location = New System.Drawing.Point(4, 22)
+        Me.mainpage.Name = "mainpage"
+        Me.mainpage.Padding = New System.Windows.Forms.Padding(3)
+        Me.mainpage.Size = New System.Drawing.Size(497, 214)
+        Me.mainpage.TabIndex = 0
+        Me.mainpage.Text = "Main"
+        Me.mainpage.UseVisualStyleBackColor = True
         '
-        'Settings
+        'settingspage
         '
-        Me.Settings.Controls.Add(Me.labellauncherversion)
-        Me.Settings.Controls.Add(Me.buttondefaultsettings)
-        Me.Settings.Controls.Add(Me.labelftpusername)
-        Me.Settings.Controls.Add(Me.labelftppassword)
-        Me.Settings.Controls.Add(Me.labelftpserver)
-        Me.Settings.Controls.Add(Me.textboxftppassword)
-        Me.Settings.Controls.Add(Me.TextBoxftpusername)
-        Me.Settings.Controls.Add(Me.textboxftpaddress)
-        Me.Settings.Controls.Add(Me.labelminram)
-        Me.Settings.Controls.Add(Me.NumericUpDownminram)
-        Me.Settings.Controls.Add(Me.numericupdownmaxram)
-        Me.Settings.Controls.Add(Me.labelrammax)
-        Me.Settings.Location = New System.Drawing.Point(4, 22)
-        Me.Settings.Name = "Settings"
-        Me.Settings.Padding = New System.Windows.Forms.Padding(3)
-        Me.Settings.Size = New System.Drawing.Size(497, 214)
-        Me.Settings.TabIndex = 1
-        Me.Settings.Text = "Settings"
-        Me.Settings.UseVisualStyleBackColor = True
+        Me.settingspage.Controls.Add(Me.labellauncherversion)
+        Me.settingspage.Controls.Add(Me.buttondefaultsettings)
+        Me.settingspage.Controls.Add(Me.labelftpusername)
+        Me.settingspage.Controls.Add(Me.labelftppassword)
+        Me.settingspage.Controls.Add(Me.labelftpserver)
+        Me.settingspage.Controls.Add(Me.textboxftppassword)
+        Me.settingspage.Controls.Add(Me.TextBoxftpusername)
+        Me.settingspage.Controls.Add(Me.textboxftpaddress)
+        Me.settingspage.Controls.Add(Me.labelminram)
+        Me.settingspage.Controls.Add(Me.NumericUpDownminram)
+        Me.settingspage.Controls.Add(Me.numericupdownmaxram)
+        Me.settingspage.Controls.Add(Me.labelrammax)
+        Me.settingspage.Location = New System.Drawing.Point(4, 22)
+        Me.settingspage.Name = "settingspage"
+        Me.settingspage.Padding = New System.Windows.Forms.Padding(3)
+        Me.settingspage.Size = New System.Drawing.Size(497, 214)
+        Me.settingspage.TabIndex = 1
+        Me.settingspage.Text = "Settings"
+        Me.settingspage.UseVisualStyleBackColor = True
         '
         'labellauncherversion
         '
@@ -249,6 +254,24 @@ Partial Class Main
         Me.textboxftpaddress.TabIndex = 9
         Me.textboxftpaddress.Text = "ftp://localhost"
         '
+        'labelserverversion
+        '
+        Me.labelserverversion.AutoSize = True
+        Me.labelserverversion.Location = New System.Drawing.Point(6, 185)
+        Me.labelserverversion.Name = "labelserverversion"
+        Me.labelserverversion.Size = New System.Drawing.Size(122, 13)
+        Me.labelserverversion.TabIndex = 4
+        Me.labelserverversion.Text = "Current Server Version : "
+        '
+        'adminpage
+        '
+        Me.adminpage.Location = New System.Drawing.Point(4, 22)
+        Me.adminpage.Name = "adminpage"
+        Me.adminpage.Size = New System.Drawing.Size(497, 214)
+        Me.adminpage.TabIndex = 2
+        Me.adminpage.Text = "Admin"
+        Me.adminpage.UseVisualStyleBackColor = True
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -263,24 +286,24 @@ Partial Class Main
         CType(Me.numericupdownmaxram, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDownminram, System.ComponentModel.ISupportInitialize).EndInit()
         Me.maintab.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
-        Me.Settings.ResumeLayout(False)
-        Me.Settings.PerformLayout()
+        Me.mainpage.ResumeLayout(False)
+        Me.mainpage.PerformLayout()
+        Me.settingspage.ResumeLayout(False)
+        Me.settingspage.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents buttonupdate As System.Windows.Forms.Button
     Friend WithEvents progbarupdate As System.Windows.Forms.ProgressBar
-    Friend WithEvents labelmcversion As System.Windows.Forms.Label
+    Friend WithEvents labelclientversion As System.Windows.Forms.Label
     Friend WithEvents buttonplay As System.Windows.Forms.Button
     Friend WithEvents numericupdownmaxram As System.Windows.Forms.NumericUpDown
     Friend WithEvents labelrammax As System.Windows.Forms.Label
     Friend WithEvents labelminram As System.Windows.Forms.Label
     Friend WithEvents NumericUpDownminram As System.Windows.Forms.NumericUpDown
     Friend WithEvents maintab As System.Windows.Forms.TabControl
-    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents Settings As System.Windows.Forms.TabPage
+    Friend WithEvents mainpage As System.Windows.Forms.TabPage
+    Friend WithEvents settingspage As System.Windows.Forms.TabPage
     Friend WithEvents labelftpusername As System.Windows.Forms.Label
     Friend WithEvents labelftppassword As System.Windows.Forms.Label
     Friend WithEvents labelftpserver As System.Windows.Forms.Label
@@ -289,5 +312,7 @@ Partial Class Main
     Friend WithEvents textboxftpaddress As System.Windows.Forms.TextBox
     Friend WithEvents buttondefaultsettings As System.Windows.Forms.Button
     Friend WithEvents labellauncherversion As System.Windows.Forms.Label
+    Friend WithEvents labelserverversion As System.Windows.Forms.Label
+    Friend WithEvents adminpage As System.Windows.Forms.TabPage
 
 End Class
