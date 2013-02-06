@@ -58,6 +58,7 @@ Public Class Main
         progbarupdate.Visible = True
         progbarupdate.Value = 1
         Try
+            'Test
             'it then tries to connect to a server and download a current modlist
             remoteFile = "/modlist.txt"
             localFile = "./modlist.txt"
