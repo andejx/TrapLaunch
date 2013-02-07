@@ -13,24 +13,38 @@ Public Class Main
     Dim checkbuildnumberexists As Boolean
     Dim clientbuildnumber As String
     Dim checkservernumberexists As Boolean
-    Dim serverbuildnumber As String
+    Dim serverbuild() As String
+    Dim clientmodlist As String()
+    Dim clientcoremodlist As String()
+
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+
+        
         'To change version number, go to Project -> TrapLaunch Properties -> Assembly Information.
         Me.Text = "TrapEZ-MC : " & My.Application.Info.Version.ToString
         labellauncherversion.Text = "Launcher Version: " & My.Application.Info.Version.ToString
 
         'checks to see if folders exist and creates them if they don't
         Dim checkclientfolder As Boolean
-        checkclientfolder = Directory.Exists(".\clientfiles")
+        checkclientfolder = Directory.Exists(".\clientfiles\.minecraft")
         If checkclientfolder = False Then
             Directory.CreateDirectory(".\launcherconfigs\")
             Directory.CreateDirectory(".\clientfiles")
-            Directory.CreateDirectory(".\clientfiles\mods")
-            Directory.CreateDirectory(".\clientfiles\coremods")
+            Directory.CreateDirectory(".\clientfiles\.minecraft")
+            Directory.CreateDirectory(".\clientfiles\.minecraft\mods")
+            Directory.CreateDirectory(".\clientfiles\.minecraft\coremods")
+            Directory.CreateDirectory(".\clientfiles\.minecraft\config")
+            Directory.CreateDirectory(".\clientfiles\.minecraft\bin")
         End If
 
+        'makes files
+        File.Create(".\launcherconfigs\servermodlist").Dispose()
+        File.Create(".\launcherconfigs\servercoremodlist").Dispose()
+        File.Create(".\launcherconfigs\serverclientonlymodlist").Dispose()
+        File.Create(".\launcherconfigs\clientmodlist").Dispose()
+        File.Create(".\launcherconfigs\clientcoremodlist").Dispose()
 
         'checks if launcher config exists, if it doesn't it calls configgenerate() and makes one.
         Dim checkconfigfile As Boolean
@@ -56,29 +70,29 @@ Public Class Main
         End If
 
         'checks to see if serverbuildnumber exists, if not makes one
-        checkservernumberexists = File.Exists(".\launcherconfigs\serverbuildnumber")
+        checkservernumberexists = File.Exists(".\launcherconfigs\serverbuild")
         If checkservernumberexists = False Then
-            File.WriteAllText(".\launcherconfigs\serverbuildnumber", "0")
-            serverbuildnumber = File.ReadAllText(".\launcherconfigs\serverbuildnumber")
+            File.WriteAllText(".\launcherconfigs\serverbuild", "0")
+            serverbuild = File.ReadAllLines(".\launcherconfigs\serverbuild")
         Else
-            serverbuildnumber = File.ReadAllText(".\launcherconfigs\serverbuildnumber")
-            labelserverversion.Text = "Current Server Version : " & serverbuildnumber
+            serverbuild = File.ReadAllLines(".\launcherconfigs\serverbuild")
+            labelserverversion.Text = "Current Server Version : " & serverbuild(0)
         End If
 
         'downloads latest serverbuildnumber and sets version as 'serverbuildnumber'
         Try
-            remoteFile = "/serverbuildnumber"
-            localFile = ".\launcherconfigs\serverbuildnumber"
+            remoteFile = "/serverbuild"
+            localFile = ".\launcherconfigs\serverbuild"
             ftpdownload()
-            serverbuildnumber = File.ReadAllText(".\launcherconfigs\serverbuildnumber")
-            labelserverversion.Text = "Current Server Version : " & serverbuildnumber
+            serverbuild = File.ReadAllLines(".\launcherconfigs\serverbuild")
+            labelserverversion.Text = "Current Server Version : " & serverbuild(0)
         Catch webex As System.Net.WebException
-            labelserverversion.Text = "Current Server Version : " & serverbuildnumber & " Unverified"
+            labelserverversion.Text = "Current Server Version : " & serverbuild(0) & " Unverified"
         End Try
         
 
         'compares the two buildnumbers, if both same turn green, if not show red
-        If clientbuildnumber <> serverbuildnumber Then
+        If clientbuildnumber <> serverbuild(0) Then
             labelclientversion.BackColor = Color.IndianRed
             labelserverversion.BackColor = Color.IndianRed
         Else
@@ -92,14 +106,127 @@ Public Class Main
     Private Sub clientlistgen()
         'writes list of files in clientfiles\mods\ to clientmodlist
         'finally found a way of doing it that didn't bring the path with it.
-        Dim o As New System.IO.DirectoryInfo(".\clientfiles\mods\")
+        progbarupdate.Visible = True
+        progbarupdate.Value = 1
+        File.Delete(".\launcherconfigs\clientmodlist")
+        File.Delete(".\launcherconfigs\clientcoremodlist")
+        File.Create(".\launcherconfigs\clientmodlist").Dispose()
+        File.Create(".\launcherconfigs\clientcoremodlist").Dispose()
+
+        Dim o As New System.IO.DirectoryInfo(".\clientfiles\.minecraft\mods\")
         Dim myfiles() As System.IO.FileInfo
         myfiles = o.GetFiles("*")
         Using write1 As StreamWriter = File.AppendText(".\launcherconfigs\clientmodlist")
             For y As Integer = 0 To myfiles.Length - 1
                 write1.WriteLine(myfiles(y).Name())
             Next
+            write1.Close()
         End Using
+
+        progbarupdate.Value = 5
+
+        Dim p As New System.IO.DirectoryInfo(".\clientfiles\.minecraft\coremods\")
+        Using write1 As StreamWriter = File.AppendText(".\launcherconfigs\clientcoremodlist")
+            myfiles = o.GetFiles("*")
+            For y As Integer = 0 To myfiles.Length - 1
+                write1.WriteLine(myfiles(y).Name())
+            Next
+        End Using
+
+        'sets the contents of the clientmodlists to string arrays
+
+        clientmodlist = File.ReadAllLines(".\launcherconfigs\clientmodlist")
+
+        clientcoremodlist = File.ReadAllLines(".\launcherconfigs\clientcoremodlist")
+
+
+        progbarupdate.Value = 10
+
+        checkmods()
+    End Sub
+
+    Private Sub checkmods()
+        'downloads servermodlist
+        Try
+            remoteFile = "/servermodlist"
+            localFile = ".\launcherconfigs\servermodlist"
+            ftpdownload()
+        Catch webex As System.Net.WebException
+        End Try
+
+        progbarupdate.Value = 15
+        'downloads servercoremodlist
+        Try
+            remoteFile = "/servercoremodlist"
+            localFile = ".\launcherconfigs\servercoremodlist"
+            ftpdownload()
+        Catch webex As System.Net.WebException
+        End Try
+
+        progbarupdate.Value = 20
+        'downloads serverclientonlymodlist
+        Try
+            remoteFile = "/serverclientonlymodlist"
+            localFile = ".\launcherconfigs\serverclientonlymodlist"
+            ftpdownload()
+        Catch webex As System.Net.WebException
+        End Try
+
+        progbarupdate.Value = 25
+        'reads the downloaded modlists into string arrays.
+        Dim servermodlist() As String
+        servermodlist = File.ReadAllLines(".\launcherconfigs\servermodlist")
+
+        Dim servercoremodlist() As String
+        servercoremodlist = File.ReadAllLines(".\launcherconfigs\servercoremodlist")
+
+        Dim serverclientonlymodlist() As String
+        serverclientonlymodlist = File.ReadAllLines(".\launcherconfigs\serverclientonlymodlist")
+
+        progbarupdate.Value = 30
+
+        'beginning of modupdating logic system.
+
+
+        'checks if serverbuild has flag for minecraft jar has updated, if true ?deletes old? one and downloads new one.
+        If serverbuild(1) = True And serverbuild(0) <> clientbuildnumber Then
+            listboxadditions.Items.Add("./bin/minecraft.jar")
+            Try
+                'File.Delete("./clientfiles/.minecraft/bin/minecraft.jar")
+                remoteFile = ("./clientfiles/minecraft.jar")
+                localFile = ("./clientfiles/.minecraft/bin/minecraft.jar")
+                ftpdownload()
+            Catch webex As System.Net.WebException
+            Catch inex As System.IO.FileNotFoundException
+            End Try
+        End If
+
+
+        'checks if serverbuild has flag for config changes.
+        If serverbuild(2) = True And serverbuild(0) <> clientbuildnumber Then
+            Try
+                remoteFile = "/clientfiles/config.zip"
+                localFile = ".\launcherconfigs\config.zip"
+                ftpdownload()
+            Catch webex As System.Net.WebException
+            End Try
+        End If
+
+
+        'compares two arrays and outputs difference.
+        Dim nextline As String
+        For Each nextline In clientmodlist
+            If Array.IndexOf(servermodlist, nextline, 0) = -1 Then
+                listboxdeletions.Items.Add("./mods/" & nextline)
+            End If
+        Next
+
+        For Each nextline In servermodlist
+            If Array.IndexOf(clientmodlist, nextline, 0) = -1 Then
+                listboxadditions.Items.Add("./mods/" & nextline)
+            End If
+        Next
+
 
     End Sub
 
@@ -128,6 +255,8 @@ Public Class Main
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles buttonupdate.Click
         'builds clientmodlist
+        listboxadditions.Items.Clear()
+        listboxdeletions.Items.Clear()
         clientlistgen()
 
         ''on button press this makes progress bar visible, then sets its value to 1
@@ -288,4 +417,5 @@ Public Class Main
             write1.Close()
         End Using
     End Sub
+
 End Class
