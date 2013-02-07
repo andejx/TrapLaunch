@@ -189,29 +189,33 @@ Public Class Main
 
 
         'checks if serverbuild has flag for minecraft jar has updated, if true ?deletes old? one and downloads new one.
-        If serverbuild(1) = True And serverbuild(0) <> clientbuildnumber Then
-            listboxadditions.Items.Add("./bin/minecraft.jar")
-            Try
-                'File.Delete("./clientfiles/.minecraft/bin/minecraft.jar")
-                remoteFile = ("./clientfiles/minecraft.jar")
-                localFile = ("./clientfiles/.minecraft/bin/minecraft.jar")
-                ftpdownload()
-            Catch webex As System.Net.WebException
-            Catch inex As System.IO.FileNotFoundException
-            End Try
-        End If
+        Try
+            If serverbuild(1) = True And serverbuild(0) <> clientbuildnumber Then
+                Try
+                    'File.Delete("./clientfiles/.minecraft/bin/minecraft.jar")
+                    remoteFile = ("./clientfiles/minecraft.jar")
+                    localFile = ("./clientfiles/.minecraft/bin/minecraft.jar")
+                    ftpdownload()
+                Catch webex As System.Net.WebException
+                Catch inex As System.IO.FileNotFoundException
+                End Try
+            End If
+        Catch index As System.IndexOutOfRangeException
+        End Try
 
 
         'checks if serverbuild has flag for config changes.
-        If serverbuild(2) = True And serverbuild(0) <> clientbuildnumber Then
-            Try
-                remoteFile = "/clientfiles/config.zip"
-                localFile = ".\launcherconfigs\config.zip"
-                ftpdownload()
-            Catch webex As System.Net.WebException
-            End Try
-        End If
-
+        Try
+            If serverbuild(2) = True And serverbuild(0) <> clientbuildnumber Then
+                Try
+                    remoteFile = "/clientfiles/config.zip"
+                    localFile = ".\launcherconfigs\config.zip"
+                    ftpdownload()
+                Catch webex As System.Net.WebException
+                End Try
+            End If
+        Catch index As System.IndexOutOfRangeException
+        End Try
 
         'compares two arrays and outputs difference.
         Dim nextline As String
@@ -226,6 +230,7 @@ Public Class Main
                 listboxadditions.Items.Add("./mods/" & nextline)
             End If
         Next
+
 
 
     End Sub
